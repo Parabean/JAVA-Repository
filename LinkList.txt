@@ -1,0 +1,128 @@
+package List;
+//一个节点
+class Node{
+    public int data; //数据
+    public Node next=null;//下一个节点的位置
+
+    public Node(int data){
+        this.data=data;
+    }
+}
+public class SingleLinkList {
+    //管理所有的链表位置，只需记录链表头结点的位置即可
+    //初始情况下head指向空，表示一个空链表
+    private Node head=null;
+
+    public void addFirst(int data){
+        //根据data值构建一个链表节点
+        Node node=new Node(data);
+        //如果链表是一个空链表
+        if(head==null){
+            head=node;
+            return;
+        }
+        //如果链表不是空链表
+        node.next=head;
+        head=node;
+    }
+    public void addLast(int data){
+        //根据data构建一个node对象
+        Node node=new Node(data);
+        //如果是一个空链表
+        if(head==null){
+            head=node;
+            return;
+        }
+        //如果链表不为空
+        Node tail=head;//设置一个临时节点，指向头节点
+        while(tail.next!=null){  //寻找尾节点
+            tail=tail.next;
+        }
+        //循环结束，当前节点就是尾节点
+        tail.next=node;
+    }
+    private int getSize(){
+        int size=0;
+       for(Node cur=head;cur!=null;cur=cur.next){
+           size++;
+       }
+        return size;
+    }
+//找出第n个节点
+    private Node getPos(int n) {
+        Node cur=head;
+        for(int i=0;i<n;i++){
+            cur=cur.next;
+        }
+        return cur;
+    }
+//在第index个节点增加data
+    public boolean addIndex(int index, int data){
+        Node node=new Node(data);
+        int size=getSize();
+        if(index<0||index>size){
+            return false;
+        }
+        if(index==0){
+            head=node;
+            return true;
+        }
+        if(index==size){
+            addLast(data);
+            return true;
+        }
+        Node prev=getPos(index-1);
+        node.next=prev.next;
+        prev.next=node;
+        return true;
+    }
+//找出链表中是否有值为key的节点
+    public boolean contains(int key){
+        Node cur=head;
+        while (cur!=null){
+            if(cur.data==key){
+                return true;
+            }
+            cur=cur.next;
+        }
+        return false;
+    }
+//删除第一个出现的值为key的节点
+    public void remove(int key){
+        //如果key是头节点
+        if(key==head.data){
+            head=head.next;
+            return;
+        }
+        //如果不是头节点
+        for(Node cur=head;cur!=null&&cur.next!=null;cur=cur.next){
+            if(cur.next.data==key){
+                cur.next=cur.next.next;
+                return;
+            }
+        }
+    }
+    //删除所有值为key的节点
+    public void removeAll(int key){
+        if(key==head.data){
+            head=head.next;
+        }
+        Node cur=head;
+        while(cur!=null&&cur.next!=null){
+            if(cur.next.data==key){
+                cur.next=cur.next.next;
+                continue;
+            }
+            cur=cur.next;
+        }
+    }
+    public void display(){
+        for(Node cur=head;cur!=null;cur=cur.next){
+            System.out.println(cur.data+" ");
+        }
+        System.out.println();
+    }
+    public void clear(){
+        head=null;
+    }
+}
