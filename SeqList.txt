@@ -1,0 +1,104 @@
+package List;
+
+public class SeqList {
+    private int[] datas=new int[100];
+    private int size=0;
+
+    public int getSize(){
+        return size;
+    }
+//打印顺序表
+    public void display(){
+        String result="[";
+        for(int i=0;i<size;i++){
+            result+=datas[i];
+            if(i<size-1){
+                result+=",";
+            }
+        }
+        result+="]";
+        System.out.println(result);
+    }
+//在pos位置增加data
+    public void add(int pos,int data){
+        //如果pos越界则返回
+        if(pos<0||pos>size){
+            return;
+        }
+        //扩容
+        if(size>datas.length){
+            int[] newdatas=new int[2*datas.length];
+            for(int i=0;i<datas.length;i++){
+                newdatas[i]=datas[i];
+            }
+            datas=newdatas;
+        }
+        //尾插
+        if(pos==size){
+            datas[pos]=data;
+            size++;
+        }else {//中间插入
+            for (int i = size-1 ; i >= pos; i--) {
+                datas[i + 1] = datas[i];
+            }
+            datas[pos] = data;
+            size++;
+        }
+    }
+    //顺序表中是否有toFind
+    public boolean contains(int toFind){
+        for(int i=0;i<size;i++){
+            if(datas[i]==toFind){
+                return true;
+            }
+        }
+        return false;
+    }
+    //返回toFind位置
+    public int search(int toFind){
+        for(int i=0;i<size;i++){
+            if(datas[i]==toFind){
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int getPos(int pos){
+        return datas[pos];
+    }
+    public void setPos(int pos,int value){
+        datas[pos]=value;
+    }
+    //删除顺序表中值为toRemove的项
+    public void remove(int toRemove){
+        int pos=searchPos(toRemove);
+        //顺序表中无toRemove
+        if(pos==-1){
+            return;
+        }
+        //尾删
+        if(pos==size-1){
+            size--;
+            return;
+        }
+        //中间位置删除
+        for(int i=pos;i<size-1;i++){
+            datas[i]=datas[i+1];
+        }
+        size--;
+    }
+    public int searchPos(int toRemove){
+        for(int i=0;i<size;i++){
+            if(datas[i]==toRemove){
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int size(){
+        return size;
+    }
+    public void clear(){
+        size=0;
+    }
+}
